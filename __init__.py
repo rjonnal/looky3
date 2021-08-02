@@ -23,6 +23,8 @@ from components import Target,Modstate
     
 import datetime
 
+
+
 # load parameters from config file
 line_color = lcfg.LINE_COLOR
 background_color = lcfg.BACKGROUND_COLOR
@@ -48,7 +50,9 @@ def log(text):
 # initialize pygame, set some initial parameters:
 pygame.init()
 myfont = pygame.font.SysFont(font, font_size)
-pygame.key.set_repeat(100,50)
+
+pygame.key.set_repeat(500,100)
+
 clock = pygame.time.Clock()
 
 # set up the screen using the desired display mode:
