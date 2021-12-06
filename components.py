@@ -153,10 +153,12 @@ class Target:
 
         msg = '%0.4f %s, %0.4f %s (%s eye)'%(abs(self.x_deg),hq,abs(self.y_deg),vq,eye)
 
-        in_script = (self.x_deg,self.y_deg) in self.location_script
+        tup = (self.x_deg,self.y_deg)
+        in_script =  tup in self.location_script
 
         if in_script:
-           msg = msg + ' [loc %d]'%self.location_script_index
+            index = self.location_script.index(tup)
+            msg = msg + ' [loc %d]'%index
 
         return msg
         
