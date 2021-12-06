@@ -55,17 +55,36 @@ class Target:
         self.rad = lcfg.RADIUS_DEG
         self.line_width_px = lcfg.LINE_WIDTH_PX
 
+        try:
+            self.location_script = lcfg.location_script
+        except AttributeError as ae:
+            self.location_script = []
+        self.location_script_index = 0
+        self.do_locations = len(self.location_script)
+        
     def deg2px(self,xdeg,ydeg):
         xpx = (self.x0_deg+xdeg)*self.pixels_per_degree
         ypx = (self.y0_deg+ydeg)*self.pixels_per_degree
         return xpx,ypx
 
     def set_position(self,xdeg,ydeg):
-        if self.snap:
+        if self.snap and not self.do_locations:
             xdeg = round(xdeg*self.step/self.small_step)*self.small_step
             ydeg = round(ydeg*self.step/self.small_step)*self.small_step
         self.x_deg = xdeg
         self.y_deg = ydeg
+
+    def location_script_previous(self):
+        """Cycle backward through script."""
+        if self.do_locations:
+            self.location_script_index = (self.location_script_index-1)%len(self.location_script)
+            self.set_position(*self.location_script[self.location_script_index])
+            
+    def location_script_next(self):
+        """Cycle forward through script."""
+        if self.do_locations:
+            self.location_script_index = (self.location_script_index+1)%len(self.location_script)
+            self.set_position(*self.location_script[self.location_script_index])
     
     def px2deg(self,xpx,ypx):
         xdeg = (xpx/self.pixels_per_degree)-self.x0_deg
@@ -132,12 +151,18 @@ class Target:
         hq = hquad[0]
         vq = vquad[0]
 
-        return '%0.4f %s, %0.4f %s (%s eye)'%(abs(self.x_deg),hq,abs(self.y_deg),vq,eye)
+        msg = '%0.4f %s, %0.4f %s (%s eye)'%(abs(self.x_deg),hq,abs(self.y_deg),vq,eye)
+
+        in_script = (self.x_deg,self.y_deg) in self.location_script
+
+        if in_script:
+           msg = msg + ' [loc %d]'%self.location_script_index
+
+        return msg
         
     def msg_offset_location(self):
         return 'offset (%0.4f,%0.4f)'%(self.x0_deg,self.y0_deg)
 
-    
     def get_lines(self):
         lines = []
         for theta in range(0,180,45):
