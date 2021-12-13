@@ -55,6 +55,9 @@ class Target:
         self.rad = lcfg.RADIUS_DEG
         self.line_width_px = lcfg.LINE_WIDTH_PX
 
+
+        self.permanent_lines = []
+        
         try:
             self.location_script = lcfg.location_script
         except AttributeError as ae:
@@ -166,7 +169,7 @@ class Target:
         return 'offset (%0.4f,%0.4f)'%(self.x0_deg,self.y0_deg)
 
     def get_lines(self):
-        lines = []
+        lines = [l for l in self.permanent_lines]
         for theta in range(0,180,45):
             line = []
             theta_rad = float(theta)/180.0*math.pi
@@ -197,6 +200,15 @@ class Target:
             x2px,y2px = self.deg2px(x2,y2)
             lines.append([(x1px,y1px),(x2px,y2px)])
         return lines
+
+
+    def freeze_target(self):
+        """Freeze a target and spawn a new one."""
+        self.permanent_lines = [l for l in self.get_lines()]
+
+    def clear_frozen(self):
+        """Clear frozen targets."""
+        self.permanent_lines = []
     
     def left(self):
         """Move full step."""

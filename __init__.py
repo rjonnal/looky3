@@ -127,7 +127,9 @@ key_triples = [
     (pygame.K_c,Modstate('ctrl'),tar.center_offsets),
     (pygame.K_SLASH,Modstate(''),toggle_help),
     (pygame.K_PAGEUP,Modstate(''),tar.location_script_previous),
-    (pygame.K_PAGEDOWN,Modstate(''),tar.location_script_next)
+    (pygame.K_PAGEDOWN,Modstate(''),tar.location_script_next),
+    (pygame.K_RETURN,Modstate(''),tar.freeze_target),
+    (pygame.K_DELETE,Modstate(''),tar.clear_frozen)
     ]
 
 # Use the keys and function docstrings to make a help menu.
