@@ -28,9 +28,9 @@ STEP_OFFSET_DEG = 1.0/8.0
 # and use the optical dist. Inversions indicate whether the target
 # image is flipped horizontally or vertically w/r/t the viewer.
 # To invert, set relevant orientation(s) to -1.
-SCREEN_DISTANCE_M = 0.5
+SCREEN_DISTANCE_M = 20.5*.0254
 VERTICAL_ORIENTATION = 1
-HORIZONTAL_ORIENTATION = 1
+HORIZONTAL_ORIENTATION = -1
 
 # Target characteristics
 RADIUS_DEG = 1.0
@@ -40,3 +40,25 @@ BACKGROUND_COLOR = BLACK
 HELP_COLOR = YELLOW4
 OFFSET_COLOR = RED4
 EMPTY_CENTER = 1.0/16.0
+
+# Location script--navigate to these locations using PageUp and PageDown:
+# Each entry in the script should be a tuple (x,y), where x and y represent
+# eccentricities given in degrees.
+
+# Locations can be listed explicitly:
+location_script = [(-8.0,0.0),(-6.0,0.0),(-4.0,0.0),(-2.0,0.0)]
+
+# Locations can also be created programmatically, e.g. 10 locations in a semicircle
+# in the temporal retina, with radius 4 deg:
+
+# location_script = []
+# import math
+# radius = 4.0
+# n_steps = 10
+
+# for theta_index in range(n_steps+1):
+#     theta = theta_index*math.pi/float(n_steps)+math.pi/2.0
+#     x = math.cos(theta)*radius
+#     y = math.sin(theta)*radius
+#     location_script.append((x,y))
+
