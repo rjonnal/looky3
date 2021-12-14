@@ -26,6 +26,7 @@ class Target:
             print(e)
             self.x0_deg = lcfg.X_OFFSET_DEG
             self.y0_deg = lcfg.Y_OFFSET_DEG
+            self.write_offsets()
 
         self.x_deg = 0.0
         self.y_deg = 0.0
@@ -267,7 +268,7 @@ class Target:
         self.write_offsets()
         
     def write_offsets(self):
-        with open('offsets.txt','wb') as fid:
+        with open('offsets.txt','w') as fid:
             fid.write('%0.3f\n'%self.x0_deg)
             fid.write('%0.3f\n'%self.y0_deg)
         

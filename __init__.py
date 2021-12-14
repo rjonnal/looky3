@@ -31,6 +31,7 @@ background_color = lcfg.BACKGROUND_COLOR
 font = lcfg.FONT
 font_size = lcfg.FONT_SIZE
 fps = lcfg.MAX_FPS
+
 try:
     display_mode_index = lcfg.DEFAULT_DISPLAY_MODE
 except Exception as e:
@@ -51,12 +52,15 @@ def log(text):
 pygame.init()
 myfont = pygame.font.SysFont(font, font_size)
 
-pygame.key.set_repeat(1000,1000)
+pygame.key.set_repeat(1000,100)
 
 clock = pygame.time.Clock()
 
 # set up the screen using the desired display mode:
 display_modes = pygame.display.list_modes()
+print('Display modes:')
+for idx,dm in enumerate(display_modes):
+    print('%d: %s'%(idx,dm))
 # check if the requested index is too high
 display_mode_index = min(display_mode_index,len(display_modes)-1)
 size = width, height = display_modes[display_mode_index]
