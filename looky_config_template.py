@@ -45,8 +45,11 @@ EMPTY_CENTER = 1.0/16.0
 # Each entry in the script should be a tuple (x,y), where x and y represent
 # eccentricities given in degrees.
 
+# Locations can be imported from a separate script:
+from location_script import location_script
+
 # Locations can be listed explicitly:
-location_script = [(-8.0,0.0),(-6.0,0.0),(-4.0,0.0),(-2.0,0.0)]
+# location_script = [(-8.0,0.0),(-6.0,0.0),(-4.0,0.0),(-2.0,0.0)]
 
 # Locations can also be created programmatically, e.g. 10 locations in a semicircle
 # in the temporal retina, with radius 4 deg:
