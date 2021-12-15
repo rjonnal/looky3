@@ -43,10 +43,11 @@ try:
 except Exception as e:
     logfile = open('log.txt','wb')
     
-def log(text):
+def log(text,stdout=False):
     now = datetime.datetime.now()
     logfile.write('%s\t%s\n'%(now.strftime('%Y-%m-%d\t%H:%M:%S'),text))
-
+    if stdout:
+        print('%s\t%s\n'%(now.strftime('%Y-%m-%d\t%H:%M:%S'),text))
    
 # initialize pygame, set some initial parameters:
 pygame.init()
@@ -206,17 +207,17 @@ while 1:
 
     state_changed = False
     # after the target has been at one location
-    # for more than 5 seconds, if the location
+    # for more than X seconds, if the location
     # hasn't been printed to the log, print
     # it now.
-    if not printed and age>5.0:
-        log(tar.msg_log_entry())
+    if not printed and log_age>2.0:
+        log(tar.msg_log_entry(),True)
         printed = True
         log_t0 = time.time()
         
     for event in pygame.event.get():
         t0 = time.time()
-        printed = False
+        log_t0 = time.time()
         state_changed = True
         mouse_state_changed = False
         current_ms.update()
@@ -231,7 +232,9 @@ while 1:
                         break
             except Exception as e:
                 pass
+            printed = False
         elif event.type == pygame.MOUSEMOTION:
+            continue
             mouse_state_changed = True
             mousex,mousey = event.pos
             mousex = mousex-hwidth
@@ -243,6 +246,7 @@ while 1:
             mousey = mousey-hheight
             x_deg,y_deg = tar.px2deg(mousex,mousey)
             tar.set_position(x_deg,y_deg)
+            printed = False
 
     if not state_changed and not mode_changed and not mouse_state_changed:
         continue
