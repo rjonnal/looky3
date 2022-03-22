@@ -8,7 +8,7 @@ After installing Anaconda, install pygame using `pip install pygame`.
 
 If you have a pre-existing Python installation you want to use, or if you want a lightweight installation without all of Anaconda, you need the following:
 
-1. [Python 2.7.x](https://www.python.org/downloads/)
+1. [Python 3.8+](https://www.python.org/downloads/). The software has been tested with Python 3.8.3, but should be compatible with later versions too.
 
 2. [Pygame](http://www.pygame.org/download.shtml). Make sure you get the version matching your Python installation.
 

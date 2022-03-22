@@ -30,7 +30,8 @@ class Target:
 
         self.x_deg = 0.0
         self.y_deg = 0.0
-
+        self.magnitude = 0.0
+        
         self.step = lcfg.STEP_SIZE_DEG
         self.small_step = lcfg.STEP_FINE_DEG
         self.very_small_step = lcfg.STEP_VERY_FINE_DEG
@@ -77,6 +78,7 @@ class Target:
             ydeg = round(ydeg*self.step/self.small_step)*self.small_step
         self.x_deg = xdeg
         self.y_deg = ydeg
+        self.magnitude = math.sqrt(xdeg**2+ydeg**2)
 
     def location_script_previous(self):
         """Cycle backward through script."""
@@ -155,7 +157,7 @@ class Target:
         hq = hquad[0]
         vq = vquad[0]
 
-        msg = '%0.4f %s, %0.4f %s (%s eye)'%(abs(self.x_deg),hq,abs(self.y_deg),vq,eye)
+        msg = '%0.4f %s, %0.4f %s (%s eye) [%0.4f mag]'%(abs(self.x_deg),hq,abs(self.y_deg),vq,eye,self.magnitude)
 
         tup = (self.x_deg,self.y_deg)
         in_script =  tup in self.location_script
@@ -276,7 +278,8 @@ class Target:
         """Center target."""
         self.y_deg = 0.0
         self.x_deg = 0.0
-
+        self.magnitude = 0.0
+        
     def center_offsets(self):
         """Center (zero) the offsets."""
         self.x0_deg = 0.0
