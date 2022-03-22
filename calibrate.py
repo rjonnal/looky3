@@ -52,6 +52,6 @@ y2 = float(y2)
 d = math.sqrt((y1-y2)**2+(x1-x2)**2)
 dpi = d/3.0
 
-f = open('./dpi.txt','wb')
+f = open('./dpi.txt','w')
 f.write('%0.1f'%dpi)
 f.close()
