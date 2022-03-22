@@ -292,6 +292,7 @@ while 1:
     if help_on:
         msg_list = msg_list + help_strings
         msg_colors = msg_colors + [lcfg.HELP_COLOR]*len(help_strings)
+        
     for idx,(msg,color) in enumerate(zip(msg_list,msg_colors)):
         textsurface = myfont.render(msg, False, color)
         screen.blit(textsurface,(0,0+idx*font_size))

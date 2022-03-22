@@ -216,41 +216,55 @@ class Target:
     def left(self):
         """Move full step."""
         self.x_deg = self.x_deg - self.step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        
     def right(self):
         """Move right full step."""
         self.x_deg = self.x_deg + self.step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        
     def up(self):
         """Move up full step."""
         self.y_deg = self.y_deg - self.step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
     def down(self):
         """Move down full step."""
         self.y_deg = self.y_deg + self.step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
         
     def small_left(self):
         """Move fine step."""
         self.x_deg = self.x_deg - self.small_step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
     def small_right(self):
         """Move right fine step."""
         self.x_deg = self.x_deg + self.small_step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
     def small_up(self):
         """Move up fine step."""
         self.y_deg = self.y_deg - self.small_step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
     def small_down(self):
         """Move down fine step."""
         self.y_deg = self.y_deg + self.small_step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
         
     def very_small_left(self):
         """Move very fine step."""
         self.x_deg = self.x_deg - self.very_small_step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
     def very_small_right(self):
         """Move right very fine step."""
         self.x_deg = self.x_deg + self.very_small_step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
     def very_small_up(self):
         """Move up very fine step."""
         self.y_deg = self.y_deg - self.very_small_step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
     def very_small_down(self):
         """Move down very fine step."""
         self.y_deg = self.y_deg + self.very_small_step
+        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
         
     def offset_left(self):
         """Move offset."""
