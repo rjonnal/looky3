@@ -66,6 +66,17 @@ class Target:
             self.location_script = []
         self.location_script_index = 0
         self.do_locations = len(self.location_script)
+        try:
+            pygame.mixer.init()
+            self.do_beep = True
+            try:
+                audio_filename = lcfg.audio_filename
+            except:
+                audio_filename = 'audio/A_4.wav'
+            self.beep = pygame.mixer.Sound(audio_filename)
+            self.beep.play()
+        except:
+            self.do_beep = False
         
     def deg2px(self,xdeg,ydeg):
         xpx = (self.x0_deg+xdeg)*self.pixels_per_degree
@@ -78,7 +89,7 @@ class Target:
             ydeg = round(ydeg*self.step/self.small_step)*self.small_step
         self.x_deg = xdeg
         self.y_deg = ydeg
-        self.magnitude = math.sqrt(xdeg**2+ydeg**2)
+        self.finish()
 
     def location_script_previous(self):
         """Cycle backward through script."""
@@ -216,55 +227,62 @@ class Target:
     def left(self):
         """Move full step."""
         self.x_deg = self.x_deg - self.step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
         
     def right(self):
         """Move right full step."""
         self.x_deg = self.x_deg + self.step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
         
     def up(self):
         """Move up full step."""
         self.y_deg = self.y_deg - self.step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
     def down(self):
         """Move down full step."""
         self.y_deg = self.y_deg + self.step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
         
     def small_left(self):
         """Move fine step."""
         self.x_deg = self.x_deg - self.small_step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
     def small_right(self):
         """Move right fine step."""
         self.x_deg = self.x_deg + self.small_step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
     def small_up(self):
         """Move up fine step."""
         self.y_deg = self.y_deg - self.small_step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
     def small_down(self):
         """Move down fine step."""
         self.y_deg = self.y_deg + self.small_step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
         
     def very_small_left(self):
         """Move very fine step."""
         self.x_deg = self.x_deg - self.very_small_step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
     def very_small_right(self):
         """Move right very fine step."""
         self.x_deg = self.x_deg + self.very_small_step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
     def very_small_up(self):
         """Move up very fine step."""
         self.y_deg = self.y_deg - self.very_small_step
-        self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        self.finish()
     def very_small_down(self):
         """Move down very fine step."""
         self.y_deg = self.y_deg + self.very_small_step
+        self.finish()
+
+    def finish(self):
         self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        if self.do_beep:
+            self.beep.play()
+
+
         
     def offset_left(self):
         """Move offset."""

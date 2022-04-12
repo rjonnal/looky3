@@ -17,6 +17,13 @@ if not os.path.exists('./dpi.txt'):
         pygame.quit()
     else:
         sys.exit('Please run calibrate.py first to establish the monitor DPI, or create a text file dpi.txt containing just this number.')
+
+
+try:
+    pygame.mixer.init()
+    beep = True
+except:
+    beep = False
         
 from constants import *
 from components import Target,Modstate
