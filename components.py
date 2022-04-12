@@ -70,7 +70,7 @@ class Target:
             pygame.mixer.init()
             self.do_beep = True
             try:
-                audio_filename = lcfg.audio_filename
+                audio_filename = lcfg.AUDIO_FILENAME
             except:
                 audio_filename = 'audio/A_4.wav'
             self.beep = pygame.mixer.Sound(audio_filename)
