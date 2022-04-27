@@ -5,10 +5,23 @@ import matplotlib.patches as patches
 from fig2gif import GIF
 from location_script import location_script
 
+
+## invert locations for this version, in which the fixation star moves
+
+location_script0 = [p for p in location_script]
+
+location_script = [(-a,-b) for a,b in location_script]
+
 xmax = np.max([ls[0] for ls in location_script])
 ymax = np.max([ls[1] for ls in location_script])
 xmin = np.min([ls[0] for ls in location_script])
 ymin = np.min([ls[1] for ls in location_script])
+
+xmax0 = np.max([ls[0] for ls in location_script0])
+ymax0 = np.max([ls[1] for ls in location_script0])
+xmin0 = np.min([ls[0] for ls in location_script0])
+ymin0 = np.min([ls[1] for ls in location_script0])
+
 
 oct_color = (0.75,0.00,0.00)
 led_color = (0.00,0.75,0.00)
@@ -23,8 +36,8 @@ dt = 0.5
 noise_rms = 0.25
 oct_scan_time = 0.2
 stimulus_radius = 0.4
-speedup = 5.0
 make_movie = True
+speedup = 5.0
 
 N = len(location_script)
 
@@ -90,8 +103,8 @@ def draw_stim(ax,loc,color=led_color,rad=stimulus_radius,alpha=0.75):
 def draw_fixation(ax,loc,rad = 1.0):
     x0,y0 = loc
     for theta in np.arange(0,2*np.pi,np.pi/4.0):
-        x1 = np.cos(theta)*rad
-        y1 = np.sin(theta)*rad
+        x1 = np.cos(theta)*rad+x0
+        y1 = np.sin(theta)*rad+y0
         ax.plot([x0,x1],[y0,y1],'w-',linewidth=2)
 
 flash_idx = None
@@ -100,8 +113,9 @@ loc = location_script[0]
 oct_loc = location_script[0]
 
 
+
 if make_movie:
-    mov = GIF('experiment_cartoon_%dx_v1.gif'%speedup,fps=speedup/dt)
+    mov = GIF('experiment_cartoon_%dx_v2.gif'%speedup,fps=speedup/dt)
 
 fig = plt.figure(figsize=(8,5))
 fig.set_facecolor('k')
@@ -147,11 +161,8 @@ for t in t_arr[t_start_idx:t_end_idx]:
     ax2.set_xlabel('patient view')
     ax2.title.set_color('w')
 
-    draw_fixation(ax2,(0,0))
-
-    
     if t>dark_time:
-        draw_oct(ax2,oct_loc,t)
+        draw_oct(ax2,(0,0),t)
 
         flash = False
 
@@ -168,7 +179,10 @@ for t in t_arr[t_start_idx:t_end_idx]:
                 break
 
         if flash:
-            draw_stim(ax2,loc)
+            draw_stim(ax2,(0,0))
+
+        draw_fixation(ax2,oct_loc)
+    
 
     if make_movie:
         mov.add(fig)
@@ -201,8 +215,8 @@ draw_flashes(ax1)
 
 ax2.clear()
 ax2.axis('equal')
-ax2.set_xlim((xmin-5,xmax+3))
-ax2.set_ylim((ymin-3,ymax+3))
+ax2.set_xlim((xmin0-5,xmax0+3))
+ax2.set_ylim((ymin0-3,ymax0+3))
 ax2.set_facecolor('k')
 ax2.set_yticks([])
 ax2.set_xticks([])
@@ -210,12 +224,21 @@ ax2.xaxis.label.set_color('w')
 ax2.set_xlabel('imaged locations')
 ax2.title.set_color('g')
 
-draw_fixation(ax2,(0,0))
-for n in range(N):
-    draw_stim(ax2,location_script[n])
-    plt.text(*location_script[n],'%d'%(n+1),ha='center',va='center',color='w')
 
-plt.savefig('experiment_cartoon_summary_v1.png',dpi=300)
+#draw_fixation(ax2,(0,0))
+
+ax2.text(0,0.5,'fovea',c='w',ha='center',va='center')
+ax2.text(0,0,'*',c='w',ha='center',va='center')
+
+for n in range(N):
+    draw_stim(ax2,location_script0[n])
+    plt.text(*location_script0[n],'%d'%(n+1),ha='center',va='center',color='w')
+
+sbx = -2.0
+sby = 0.0
+plt.plot([sbx-2,sbx-1],[sby+0,sby+0],'w-',linewidth=3)
+plt.text(sbx-1.5,sby-.1,'$1^\circ$',ha='center',va='top',color='w')
+    
+plt.savefig('experiment_cartoon_summary_v2.png',dpi=300)
 plt.pause(.00001)
     
-plt.show()
