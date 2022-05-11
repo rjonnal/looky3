@@ -64,7 +64,7 @@ class Target:
             self.location_script = lcfg.location_script
         except AttributeError as ae:
             self.location_script = []
-        self.location_script_index = 0
+        self.location_script_index = None
         self.do_locations = len(self.location_script)
         try:
             pygame.mixer.init()
@@ -94,13 +94,19 @@ class Target:
     def location_script_previous(self):
         """Cycle backward through script."""
         if self.do_locations:
-            self.location_script_index = (self.location_script_index-1)%len(self.location_script)
+            if self.location_script_index is None:
+                self.location_script_index = 0
+            else:
+                self.location_script_index = (self.location_script_index-1)%len(self.location_script)
             self.set_position(*self.location_script[self.location_script_index])
             
     def location_script_next(self):
         """Cycle forward through script."""
         if self.do_locations:
-            self.location_script_index = (self.location_script_index+1)%len(self.location_script)
+            if self.location_script_index is None:
+                self.location_script_index = 0
+            else:
+                self.location_script_index = (self.location_script_index+1)%len(self.location_script)
             self.set_position(*self.location_script[self.location_script_index])
     
     def px2deg(self,xpx,ypx):
