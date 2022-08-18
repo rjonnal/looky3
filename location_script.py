@@ -4,7 +4,7 @@ import math
 # in the temporal retina, with radius 4 deg:
 
 location_script = []
-radius_array = [4.0,6.0,8.0]
+radius_array = [2.0,4.0]
 steps = 5
 
 theta_start_deg = 60

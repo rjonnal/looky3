@@ -33,7 +33,10 @@ background_color = lcfg.BACKGROUND_COLOR
 font = lcfg.FONT
 font_size = lcfg.FONT_SIZE
 fps = lcfg.MAX_FPS
-
+try:
+    text_left = lcfg.TEXT_LEFT_OFFSET
+except Exception as e:
+    text_left = 0
 try:
     display_mode_index = lcfg.DEFAULT_DISPLAY_MODE
 except Exception as e:
@@ -183,7 +186,7 @@ help_on = False
 current_ms = Modstate()
 
 n_frames = 0
-
+last_help_on = False
 while 1:
     n_frames = n_frames + 1
     # throttle the frame rate to the lcfg value:
@@ -294,10 +297,15 @@ while 1:
     if help_on:
         msg_list = msg_list + help_strings
         msg_colors = msg_colors + [lcfg.HELP_COLOR]*len(help_strings)
+    help_changed = not help_on==last_help_on
+    if help_changed and help_on:
+        for s in help_strings:
+            print(s)
+    last_help_on = help_on
         
     for idx,(msg,color) in enumerate(zip(msg_list,msg_colors)):
         textsurface = myfont.render(msg, False, color)
-        screen.blit(textsurface,(0,0+idx*font_size))
+        screen.blit(textsurface,(text_left,0+idx*font_size))
         
     pygame.display.flip()
     
