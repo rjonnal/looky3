@@ -83,8 +83,8 @@ class Target:
         ypx = (self.y0_deg+ydeg)*self.pixels_per_degree
         return xpx,ypx
 
-    def set_position(self,xdeg,ydeg):
-        if self.snap and not self.do_locations:
+    def set_position(self,xdeg,ydeg,nosnap=False):
+        if self.snap and not nosnap:
             xdeg = round(xdeg*self.step/self.small_step)*self.small_step
             ydeg = round(ydeg*self.step/self.small_step)*self.small_step
         self.x_deg = xdeg
@@ -98,7 +98,7 @@ class Target:
                 self.location_script_index = 0
             else:
                 self.location_script_index = (self.location_script_index-1)%len(self.location_script)
-            self.set_position(*self.location_script[self.location_script_index])
+            self.set_position(*self.location_script[self.location_script_index],nosnap=True)
             
     def location_script_next(self):
         """Cycle forward through script."""
@@ -107,7 +107,7 @@ class Target:
                 self.location_script_index = 0
             else:
                 self.location_script_index = (self.location_script_index+1)%len(self.location_script)
-            self.set_position(*self.location_script[self.location_script_index])
+            self.set_position(*self.location_script[self.location_script_index],nosnap=True)
     
     def px2deg(self,xpx,ypx):
         xdeg = (xpx/self.pixels_per_degree)-self.x0_deg
