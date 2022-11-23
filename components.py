@@ -3,6 +3,7 @@ import math
 import sys
 import pygame
 import looky_config as lcfg
+import time
 
 class Target:
     """The target object must do the following:
@@ -66,6 +67,7 @@ class Target:
             self.location_script = []
         self.location_script_index = None
         self.do_locations = len(self.location_script)
+
         try:
             pygame.mixer.init()
             self.do_beep = True
@@ -83,6 +85,27 @@ class Target:
         ypx = (self.y0_deg+ydeg)*self.pixels_per_degree
         return xpx,ypx
 
+
+    def create_location_script(self):
+        """Create a script with 75 um isoeccentric steps from the current location"""
+        self.do_locations = True
+        theta = math.atan2(self.y_deg,self.x_deg)
+        rad = math.sqrt(self.x_deg**2+self.y_deg**2)
+        circum_deg = rad*2*math.pi
+        step_size_deg = 0.25 # 75 um, given 300 um per deg
+        # the anglular step corresponding to 75 um
+        step_size_theta = 2*math.pi*step_size_deg/circum_deg
+        theta_start = -10*step_size_theta
+        theta_end = 10*step_size_theta
+        theta_vec = [theta+step_size_theta*float(k) for k in range(-10,11)]
+        self.location_script_index = 10
+        self.location_script = []
+        for theta in theta_vec:
+            xloc = rad*math.cos(theta)
+            yloc = rad*math.sin(theta)
+            self.location_script.append((xloc,yloc))
+        print('Setting location script to %s.'%self.location_script)
+            
     def set_position(self,xdeg,ydeg,nosnap=False):
         if self.snap and not nosnap:
             xdeg = round(xdeg*self.step/self.small_step)*self.small_step

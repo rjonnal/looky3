@@ -1,5 +1,7 @@
 import sys, pygame, shutil, os
 import time
+from watchdog.observers import Observer
+from watchdog.events import LoggingEventHandler, FileSystemEventHandler
 
 try:
     import looky_config as lcfg
@@ -139,7 +141,8 @@ key_triples = [
     (pygame.K_PAGEUP,Modstate(''),tar.location_script_previous),
     (pygame.K_PAGEDOWN,Modstate(''),tar.location_script_next),
     (pygame.K_RETURN,Modstate(''),tar.freeze_target),
-    (pygame.K_DELETE,Modstate(''),tar.clear_frozen)
+    (pygame.K_DELETE,Modstate(''),tar.clear_frozen),
+    (pygame.K_s,Modstate(''),tar.create_location_script)
     ]
 
 # Use the keys and function docstrings to make a help menu.
@@ -184,6 +187,36 @@ help_on = False
 # event loop below, using its own call to
 # pygame.key.get_mods
 current_ms = Modstate()
+
+
+class ObserverHandler(FileSystemEventHandler):
+    def __init__(self,target):
+        super().__init__()
+        self.target = target
+    def on_created(self,event):
+        filename = event.src_path
+        ext = os.path.splitext(filename)[1]
+        if ext.lower()=='.unp':
+            outfn = filename.replace('.unp','')+'.looky'
+            outstr = str(self.target)
+            with open(outfn,'w') as fid:
+                fid.write(outstr)
+        
+
+try:
+    path = lcfg.DATA_MONITORING_DIRECTORY
+    #event_handler = LoggingEventHandler()
+    event_handler = ObserverHandler(tar)
+    observer = Observer()
+    observer.schedule(event_handler, path, recursive=True)
+    observer.start()
+except AttributeError as ae:
+    print('DATA_MONITORING_DIRECTORY not set in looky_config.py. Proceeding without data monitoring.')
+    pass
+except FileNotFoundError as fnfe:
+    print('DATA_MONITORING_DIRECTORY %s not found. Please edit looky_config.py as required.'%lcfg.DATA_MONITORING_DIRECTORY)
+    sys.exit()
+
 
 n_frames = 0
 last_help_on = False
