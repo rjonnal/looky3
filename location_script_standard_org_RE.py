@@ -31,7 +31,8 @@ else:
 
     for radius in radius_array:
         for y in y_coordinates:
-            x = -math.sqrt(radius**2-y**2)
+            # no negative sign because right eye
+            x = math.sqrt(radius**2-y**2)
             location_script.append((x,y))
         
 

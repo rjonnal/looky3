@@ -92,8 +92,10 @@ class Target:
         theta = math.atan2(self.y_deg,self.x_deg)
         rad = math.sqrt(self.x_deg**2+self.y_deg**2)
         circum_deg = rad*2*math.pi
-        step_size_deg = 0.25 # 75 um, given 300 um per deg
-        # the anglular step corresponding to 75 um
+        try:
+            step_size_deg = lcfg.LOCATION_SCRIPT_STEP_DEG
+        except:
+            step_size_deg = 1.0 # 300 um, given 300 um per deg
         step_size_theta = 2*math.pi*step_size_deg/circum_deg
         theta_start = -10*step_size_theta
         theta_end = 10*step_size_theta
