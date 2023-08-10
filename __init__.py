@@ -6,14 +6,14 @@ from watchdog.events import LoggingEventHandler, FileSystemEventHandler
 try:
     import looky_config as lcfg
 except ImportError:
-    answer = raw_input('looky_config.py does not exist. Should it be automatically generated? [y/n] ').lower()
+    answer = input('looky_config.py does not exist. Should it be automatically generated? [y/n] ').lower()
     if answer=='y':
         shutil.copyfile('./looky_config_template.py','./looky_config.py')
         import looky_config as lcfg
     else:
         sys.exit('Please create looky_config.py from looky_config_template.py.')
 if not os.path.exists('./dpi.txt'):
-    answer = raw_input('dpi.txt does not exist. Should calibrate.py be run to determine monitor DPI? [y/n] ').lower()
+    answer = input('dpi.txt does not exist. Should calibrate.py be run to determine monitor DPI? [y/n] ').lower()
     if answer=='y':
         import calibrate
         pygame.quit()
@@ -201,7 +201,10 @@ class ObserverHandler(FileSystemEventHandler):
             outstr = str(self.target)
             with open(outfn,'w') as fid:
                 fid.write(outstr)
-        
+            outfn = filename.replace('.unp','')+'.txt'
+            outstr = self.target.get_loc()
+            with open(outfn,'w') as fid:
+                fid.write(outstr)
 
 try:
     path = lcfg.DATA_MONITORING_DIRECTORY
