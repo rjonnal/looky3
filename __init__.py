@@ -204,9 +204,9 @@ class ObserverHandler(FileSystemEventHandler):
         self.target = target
     def on_created(self,event):
         print('Found: %s.'%event)
-        sys.exit()
         filename = event.src_path
         ext = os.path.splitext(filename)[1]
+        print(ext)
         if ext.lower()=='.unp':
             outfn = filename.replace('.unp','')+'.looky'
             outstr = str(self.target)
@@ -245,7 +245,6 @@ while 1:
     mode_age = t-time_of_last_mode_change
     age = t-t0
     log_age = t-log_t0
-    print(log_age)
     if (age):
         other_fps = float(n_frames)/float(age)
     else:
