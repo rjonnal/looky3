@@ -78,7 +78,11 @@ display_mode_index = min(display_mode_index,len(display_modes)-1)
 size = width, height = display_modes[display_mode_index]
 n_display_modes = len(display_modes)
 
-sdl_x = -1920
+try:
+    sdl_x = lcfg.DEFAULT_DISPLAY_X_OFFSET
+except Exception as e:
+    sdl_x = 0
+
 sdl_y = 0
 os.environ['SDL_VIDEO_WINDOW_POS'] = f"{sdl_x},{sdl_y}"
 
