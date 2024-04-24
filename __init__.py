@@ -203,6 +203,8 @@ class ObserverHandler(FileSystemEventHandler):
         super().__init__()
         self.target = target
     def on_created(self,event):
+        print('Found: %s.'%event)
+        sys.exit()
         filename = event.src_path
         ext = os.path.splitext(filename)[1]
         if ext.lower()=='.unp':

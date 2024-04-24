@@ -173,6 +173,13 @@ class Target:
                 'eye %s'%eye]
         return '\n'.join(outlist)
 
+    def get_loc(self):
+
+        rad = math.sqrt(self.x_deg**2+self.y_deg**2)
+        out = '%0.3f\n%0.3f\n%0.3f'%(self.x_deg,self.y_deg,rad)
+        return out
+
+    
     def msg_abs_location(self):
         return '%0.3f,%0.3f (abs)'%(self.x_deg,self.y_deg)
 
@@ -213,6 +220,9 @@ class Target:
     def msg_offset_location(self):
         return 'offset (%0.4f,%0.4f)'%(self.x0_deg,self.y0_deg)
 
+
+    
+    
     def get_lines(self):
         lines = [l for l in self.permanent_lines]
         for theta in range(0,180,45):
