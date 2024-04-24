@@ -45,17 +45,21 @@ except Exception as e:
     display_mode_index = 0
 
 # open a log file and define a logging function:
-try:
-    logfile = open('log.txt','a')
-except Exception as e:
-    logfile = open('log.txt','wb')
-    
+#try:
+#    logfile = open('log.txt','a')
+#except Exception as e:
+#    logfile = open('log.txt','a')
+#logfile.write('blahblahblah')
+
 def log(text,stdout=False):
     now = datetime.datetime.now()
-    logfile.write('%s\t%s\n'%(now.strftime('%Y-%m-%d\t%H:%M:%S'),text))
+    fid = open('./log.txt','a')
+    fid.write('%s\t%s\n'%(now.strftime('%Y-%m-%d\t%H:%M:%S'),text))
+    fid.close()
+    #logfile.write('%s\t%s\n'%(now.strftime('%Y-%m-%d\t%H:%M:%S'),text))
     if stdout:
         print('%s\t%s\n'%(now.strftime('%Y-%m-%d\t%H:%M:%S'),text))
-   
+    
 # initialize pygame, set some initial parameters:
 pygame.init()
 myfont = pygame.font.SysFont(font, font_size)
@@ -73,10 +77,15 @@ for idx,dm in enumerate(display_modes):
 display_mode_index = min(display_mode_index,len(display_modes)-1)
 size = width, height = display_modes[display_mode_index]
 n_display_modes = len(display_modes)
+
+sdl_x = -1920
+sdl_y = 0
+os.environ['SDL_VIDEO_WINDOW_POS'] = f"{sdl_x},{sdl_y}"
+
 screen = pygame.display.set_mode(size)
 hwidth = width//2
 hheight = height//2
-
+#pygame.display.toggle_fullscreen()
 
 # initialize the Target object:
 tar = Target()
@@ -234,7 +243,7 @@ while 1:
     mode_age = t-time_of_last_mode_change
     age = t-t0
     log_age = t-log_t0
-    
+    print(log_age)
     if (age):
         other_fps = float(n_frames)/float(age)
     else:
@@ -288,6 +297,7 @@ while 1:
 
     if not state_changed and not mode_changed and not mouse_state_changed:
         continue
+
 
     screen.fill(background_color)
 
