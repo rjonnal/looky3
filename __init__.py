@@ -6,7 +6,7 @@ from watchdog.events import LoggingEventHandler, FileSystemEventHandler
 try:
     import looky_config as lcfg
 except ImportError:
-    answer = raw_input('looky_config.py does not exist. Should it be automatically generated? [y/n] ').lower()
+    answer = input('looky_config.py does not exist. Should it be automatically generated? [y/n] ').lower()
     if answer=='y':
         shutil.copyfile('./looky_config_template.py','./looky_config.py')
         import looky_config as lcfg
@@ -40,7 +40,7 @@ try:
 except Exception as e:
     text_left = 0
 try:
-    display_mode_index = lcfg.DEFAULT_DISPLAY_MODE
+    display_mode_index = lcfg.DEFAULT_DISPLAY_MODE_INDEX
 except Exception as e:
     display_mode_index = 0
 
@@ -70,6 +70,12 @@ clock = pygame.time.Clock()
 
 # set up the screen using the desired display mode:
 display_modes = pygame.display.list_modes()
+
+try:
+    display_modes = [lcfg.DISPLAY_MODE] + display_modes
+except:
+    pass
+
 print('Display modes:')
 for idx,dm in enumerate(display_modes):
     print('%d: %s'%(idx,dm))
@@ -119,8 +125,9 @@ def fullscreen():
 
 def toggle_help():
     """Toggle help hints."""
-    global help_on
+    global help_on, help_strings
     help_on = not help_on
+
     
 key_triples = [
     (pygame.K_ESCAPE,Modstate('any'),exit),
@@ -178,6 +185,7 @@ for kt in key_triples:
     while len(lead)<18:
         lead = lead+' '
     help_strings.append('%s %s'%(lead,doc))
+    
 
 # convert to a dictionary for efficient lookup:
 key_dict = {}
@@ -213,6 +221,11 @@ class ObserverHandler(FileSystemEventHandler):
         print(ext)
         if ext.lower()=='.unp':
             outfn = filename.replace('.unp','')+'.looky'
+            outstr = str(self.target)
+            with open(outfn,'w') as fid:
+                fid.write(outstr)
+        if ext.lower()=='.oct':
+            outfn = filename.replace('.oct','')+'.looky'
             outstr = str(self.target)
             with open(outfn,'w') as fid:
                 fid.write(outstr)

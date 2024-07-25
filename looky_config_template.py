@@ -9,7 +9,11 @@ SNAP_MOUSE_TO_FINE_GRID = True
 
 # Use the 'm' key to cycle through display modes. If there's
 # a preferable one, note its number and write it here.
-DEFAULT_DISPLAY_MODE = 0
+DEFAULT_DISPLAY_MODE_INDEX = 0
+# DISPLAY_MODE = (1920,1080) # prepends this to the automatically generated list of modes
+# DEFAULT_DISPLAY_X_OFFSET = 1920*2 # use this to specify monitor
+
+# DATA_MONITORING_DIRECTORY = 'E:/foo'
 
 # Offsets for aligning the target origin with the imaging beam
 X_OFFSET_DEG = 0.0

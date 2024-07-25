@@ -173,6 +173,14 @@ class Target:
                 'eye %s'%eye]
         return '\n'.join(outlist)
 
+    def __repr__(self):
+        hquad,vquad = self.get_quadrant()
+        hq = hquad[0]
+        vq = vquad[0]
+            
+        out = '(%0.3f %s, %0.3f %s)'%(abs(self.x_deg),hq,abs(self.y_deg),vq)
+        return out
+
     def get_loc(self):
 
         rad = math.sqrt(self.x_deg**2+self.y_deg**2)
@@ -320,6 +328,7 @@ class Target:
 
     def finish(self):
         self.magnitude = math.sqrt(self.x_deg**2+self.y_deg**2)
+        print(self.__repr__())
         if self.do_beep:
             self.beep.play()
 
